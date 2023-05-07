@@ -12,5 +12,8 @@ Terminal 2 - RVIZ
 roslaunch turtlebot3_slam turtlebot3_slam.launch  slam_methods:=gmapping
 
 Terminal 3 - Simulador de potencia WIFI
-rrosrun my_robot_controller fake_wifi_transmiter.py 
+rosrun my_robot_controller fake_wifi_transmiter.py 
+
+Terminal 4 - Heat Map
+rosrun my_robot_controller make_heat_map.py 
 
