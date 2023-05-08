@@ -11,6 +11,11 @@ from rosgraph_msgs.msg import Clock
 
 last_clock = 0
 last_seq = -1
+last_rssi = 0
+
+def rssi_callback(rssi: Float64):
+    global last_rssi
+    last_rssi = rssi.data
 
 def map_callback(map: OccupancyGrid):
     rospy.loginfo("Res:" + str(map.info.resolution) + " time:" + str(map.info.map_load_time))
@@ -22,30 +27,37 @@ def clock_callback(clock: Clock):
 def odom_callback(odom: Odometry):
     global last_seq
     global last_clock
+    global last_rssi
     global msg
     global heat_map_pub
+
+    # Por arriba de estos valores es 100% y por debajo es 0%
+    max_dbm = float(10)
+    min_dbm = float(-20)
 
     last_seq += 1
     msg.header.seq = last_seq
     msg.header.stamp = last_clock
     
-    x = int(odom.pose.pose.position.x)
-    y = int(odom.pose.pose.position.y)
+    x = float(odom.pose.pose.position.x)
+    y = float(odom.pose.pose.position.y)
 
     points_list = get_area(x, y)
 
-    rospy.loginfo("X: " + str(x) + " Y:" + str(y))
-
     for point in points_list:
-        msg.data[point] = 100
-        
+        if last_rssi > max_dbm:
+            msg.data[point] = 100
+        elif last_rssi < min_dbm:
+            msg.data[point] = 0
+        else:
+            msg.data[point] = int(((last_rssi - min_dbm)/(abs(max_dbm-min_dbm)))*100)
 
+        
     heat_map_pub.publish(msg)
 
 def get_area(x, y, radius = 0.5, center = 76615, escale = 20, cols = 384, rows = 384):
     ret_list = []
-    punto_central = int(center + (y * escale * 384) + (x * escale))
-   
+    punto_central = int(center + int(y * escale) * cols + (x * escale))
 
     pixel_radius = int(radius*escale)
     #pixel_radius = 3
@@ -104,7 +116,7 @@ if __name__ == '__main__':
     #sub = rospy.Subscriber("/map", OccupancyGrid, callback=map_callback)
     clock_sub = rospy.Subscriber("/clock", Clock, callback=clock_callback)
     odom_sub = rospy.Subscriber("/odom", Odometry, callback=odom_callback)
-
+    rssi_sub = rospy.Subscriber("/rssi_level_dbm", Float64, callback=rssi_callback)
     heat_map_pub = rospy.Publisher("/heat_map", OccupancyGrid, queue_size=10)
 
     rospy.spin()
