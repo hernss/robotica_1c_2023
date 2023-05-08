@@ -23,19 +23,20 @@ class Explorer:
 
         # update the last scan time
         self.last_scan_time = rospy.Time.now()
-
+        
         # find the closest point in the laser scan
-        closest_point = min(scan_msg.ranges)
+        #closest_point = min(scan_msg.ranges)
+        closest_point = min(scan_msg.ranges[350:360])
         if closest_point > 0.5:  # if we're close to an obstacle, stop
             self.twist_msg.linear.x = 0.2  # move forward
             self.twist_msg.angular.z = 0.0  # no turning
             self.turn_start_time = None  # reset turn timer
-            rospy.loginfo("First Forward")
+            rospy.loginfo("Long Forward")
         else:
             if self.turn_start_time is None:
                 self.turn_start_time = rospy.Time.now()  # start turn timer
             elif (rospy.Time.now() - self.turn_start_time) > self.turn_duration:
-                self.twist_msg.linear.x = 0.2  # move forward after turn timer expires
+                self.twist_msg.linear.x = 0.1  # move forward after turn timer expires
                 self.twist_msg.angular.z = 0.0  # no turning
                 self.turn_start_time = None  # reset turn timer
                 rospy.loginfo("Forward")
