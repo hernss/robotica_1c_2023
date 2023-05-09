@@ -14,7 +14,7 @@ class Explorer:
         self.twist_msg = Twist()
         self.last_scan_time = rospy.Time.now()
         self.turn_start_time = None
-        self.turn_duration = rospy.Duration.from_sec(1.0)
+        self.turn_duration = rospy.Duration.from_sec(3.0)
 
     def scan_callback(self, scan_msg):
         # check if a new scan has been received recently
@@ -26,7 +26,7 @@ class Explorer:
         
         # find the closest point in the laser scan
         #closest_point = min(scan_msg.ranges)
-        closest_point = min(scan_msg.ranges[350:360])
+        closest_point = min(scan_msg.ranges[310:360])
         if closest_point > 0.5:  # if we're close to an obstacle, stop
             self.twist_msg.linear.x = 0.2  # move forward
             self.twist_msg.angular.z = 0.0  # no turning
