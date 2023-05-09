@@ -42,3 +42,5 @@
 ![heatmap](./rviz/rviz%20heat%20map.png)
 
 [Video de funcionamiento](https://frbautneduar-my.sharepoint.com/:v:/g/personal/htravado_frba_utn_edu_ar/ES7OqQve1ZNOpxuKj6dg2I0B7qUQzcsdTQUmzsvLAOy5EA?e=7VyChX) <- hay que acceder con cuenta de UTN.BA
+
+[Video funcionamiento - Mirror](https://github.com/hernss/robotica_1c_2023/blob/main/Misc/Video%20funcionamiento.mp4)
