@@ -32,7 +32,7 @@ def odom_callback(odom: Odometry):
     global heat_map_pub
 
     # Por arriba de estos valores es 100% y por debajo es 0%
-    max_dbm = float(10)
+    max_dbm = float(8)
     min_dbm = float(-20)
 
     last_seq += 1
@@ -48,10 +48,12 @@ def odom_callback(odom: Odometry):
         if last_rssi > max_dbm:
             msg.data[point] = 100
         elif last_rssi < min_dbm:
-            msg.data[point] = 0
+            msg.data[point] = 1
         else:
             msg.data[point] = int(((last_rssi - min_dbm)/(abs(max_dbm-min_dbm)))*100)
 
+        if msg.data[point] == 0:
+            msg.data[point] = 1
         
     heat_map_pub.publish(msg)
 
