@@ -8,7 +8,6 @@ import numpy as np
 from std_msgs.msg import Float64
 from rosgraph_msgs.msg import Clock
 
-
 last_clock = 0
 last_seq = -1
 last_rssi = 0
@@ -88,8 +87,6 @@ def get_area(x, y, radius = 0.5, center = 76615, escale = 20, cols = 384, rows =
 if __name__ == '__main__':
     rospy.init_node("map_subscriber")
     rospy.loginfo("Heat map generator running")
-
-    
 
     # frecuencia de actualizacion del mapa
     #rate = rospy.Rate(1)
