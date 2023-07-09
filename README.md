@@ -7,12 +7,67 @@
 {my_robot_controller} = > Your own pkg name. 
 
 --------
-## Cargar configuracion de visualizacion de RVIZ
 
-    cd /opt/ros/noetic/share/turtlebot3_slam/rviz
-    sudo mv turtlebot3_gmapping.rviz turtlebot3_gmapping_backup.rviz
-    sudo cp ~/catkin_ws/src/my_robot_controller/rviz/turtlebot3_gmapping.rviz .
+## Instalacion de ROS Noetic
 
+Para la instalacion de ros noetic seguir el tutorial disponible en la pagina oficial de ros 
+
+```
+http://wiki.ros.org/noetic/Installation/Ubuntu
+```
+
+## Instalacion del modelo TurtleBot3 
+
+### Instalacion  de las dependencias
+
+```
+sudo apt-get install ros-noetic-joy ros-noetic-teleop-twist-joy \
+ros-noetic-teleop-twist-keyboard ros-noetic-laser-proc \
+ros-noetic-rgbd-launch ros-noetic-rosserial-arduino \
+ros-noetic-rosserial-python ros-noetic-rosserial-client \
+ros-noetic-rosserial-msgs ros-noetic-amcl ros-noetic-map-server \
+ros-noetic-move-base ros-noetic-urdf ros-noetic-xacro \
+ros-noetic-compressed-image-transport ros-noetic-rqt* ros-noetic-rviz \
+ros-noetic-gmapping ros-noetic-navigation ros-noetic-interactive-markers
+```
+
+### Instalacion de los paquetes de TurtleBot3
+
+```
+sudo apt install ros-noetic-dynamixel-sdk
+sudo apt install ros-noetic-turtlebot3-msgs
+sudo apt install ros-noetic-turtlebot3
+sudo apt install ros-noetic-explore-lite
+```
+### Instalacion del simulador de TurtleBot3
+
+```
+mkdir ~/catkin_ws 
+cd ~/catkin_ws/src
+git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+cd ~/catkin_ws && catkin_make
+echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+source devel/setup.bash
+```
+
+### Instalacion de los controladores del robot
+
+```
+cd ~/catkin_ws/src
+mkdir my_robot_controller
+cd my_robot_controller
+rm -rf *
+git clone https://github.com/hernss/robotica_1c_2023 .
+cd ~/catkin_ws && catkin_make
+```
+
+### Cargar configuracion de visualizacion de RVIZ
+
+```
+cd /opt/ros/noetic/share/turtlebot3_slam/rviz
+sudo mv turtlebot3_gmapping.rviz turtlebot3_gmapping_backup.rviz
+sudo cp ~/catkin_ws/src/my_robot_controller/rviz/turtlebot3_gmapping.rviz .
+```
 
 # Orden de ejecucion de nodos
 
